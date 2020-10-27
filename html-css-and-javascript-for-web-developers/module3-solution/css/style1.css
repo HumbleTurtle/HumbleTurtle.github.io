@@ -27,7 +27,7 @@ body{
 
 .navbar-nav .nav-link {
   background-color: #cd5050;
-  color:white;
+  color:white !important;
   border-bottom:1px solid lightgray;
 }
 
