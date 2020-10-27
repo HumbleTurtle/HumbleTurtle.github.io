@@ -3,7 +3,7 @@
 
 body{
   font-family: Arial, Helvetica, sans-serif;
-  color: white;
+  color: black;
 }
 
 .tag {
@@ -22,6 +22,18 @@ body{
 
 .tag.three{
   background-color:#e89e48;color:white;
+}
+
+.navbar {
+  padding:0px;
+}
+
+.my-custom-nav-bar{
+  width:100%;
+}
+
+.my-custom-nav-bar .nav-item{
+  width:100%;
 }
 
 .card{
