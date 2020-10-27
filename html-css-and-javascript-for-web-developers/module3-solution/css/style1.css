@@ -42,6 +42,6 @@ body{
 
 @media (max-width: 768px) {
   .row .col-12{
-    padding: max(30px, 5vw);
+    padding: max(50px, 5vw);
   }
 }
