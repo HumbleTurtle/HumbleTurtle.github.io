@@ -11,6 +11,19 @@ body{
   padding:1vh 0;
 }
 
+
+.tag.one {
+  background-color:#ee677f;color:white;
+}
+
+.tag.two{
+  background-color:#e05252;color:white;
+}
+
+.tag.three{
+  background-color:#e89e48;color:white;
+}
+
 .card{
   margin: 10px auto;
 }
@@ -18,6 +31,10 @@ body{
 .card p{
   padding: 1vw;
   white-space: pre-line;
+}
+
+.my-margin-1{
+  margin-top:10px;
 }
 
 
