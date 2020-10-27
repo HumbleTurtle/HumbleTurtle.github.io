@@ -17,6 +17,9 @@ h1 {
   background-color: lightgray;
   margin: max(2vh, 10px) max(2vw, 10px);
   color:black;
+
+  border: 2px solid #6c7e8d;
+  box-sizing: border-box;
 }
 
 .tag{
@@ -25,6 +28,10 @@ h1 {
     padding: max(2%,10px) max(10%,75px);
     font-weight:bold;
     font-size:17px;
+
+    border-bottom: 2px solid #6c7e8d;
+    border-left: 2px solid #6c7e8d;
+    box-sizing: border-box;
 }
 
 p {
