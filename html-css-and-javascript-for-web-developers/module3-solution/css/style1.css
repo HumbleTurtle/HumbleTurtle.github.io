@@ -1,0 +1,47 @@
+
+/********** Base styles **********/
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+}
+
+.tag {
+  text-align:center;
+  padding:1vh 0;
+}
+
+.card{
+  margin: 10px auto;
+}
+
+.card p{
+  padding: 1vw;
+  white-space: pre-line;
+}
+
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: #FFC0CB;
+}
+
+.navbar-nav .nav-link {
+  background-color: #565656;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: #cd5050;
+}
+
+.navbar-nav .nav-link{
+  border-bottom:1px solid lightgray;
+}
+.navbar-nav .nav-link:last-of-type{
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .row .col-12{
+    padding: max(30px, 5vw);
+  }
+}
