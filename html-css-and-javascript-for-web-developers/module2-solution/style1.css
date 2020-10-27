@@ -25,7 +25,7 @@ h1 {
 .tag{
     float:right;
     text-align: center;
-    padding: max(2%,10px) max(10%,75px);
+    padding: max(2%,10px) max(6vw,20px);
     font-weight:bold;
     font-size:17px;
 
