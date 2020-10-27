@@ -26,11 +26,11 @@ body{
 }
 
 .navbar-nav .nav-link {
-  background-color: #565656;
+  background-color: #cd5050;
 }
 
 .navbar-nav .nav-link:hover {
-  background-color: #cd5050;
+  background-color: #565656;
 }
 
 .navbar-nav .nav-link{
