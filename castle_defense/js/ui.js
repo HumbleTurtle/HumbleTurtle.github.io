@@ -70,9 +70,9 @@ const app = Vue.createApp({
                                     {{ buffs[key].description }}
                                 </div>
                                 <div class="col-sm-5"> 
-                                    <span style="float:right;">{{fNumber(buffs[key].cost)}} 💰</span>
+                                    <span style="float:right;">{{fNumber(buffs[key].cost)}}💰</span>
                                     <br> 
-                                    <span style="float:right;">Lvl.{{ buffs[key].level }}</span>      
+                                    <span style="float:right;">Lvl. {{ buffs[key].level }}</span>      
                                 </div> 
                             </div>            
 

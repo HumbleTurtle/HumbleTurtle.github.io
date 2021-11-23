@@ -20,9 +20,9 @@ class Core {
         
         Castle: {
             Ralentization: new Buffable("Traps", "Slows down enemy march", 1),
-            Attack: new Buffable("Castle Attack", "Defends against enemies marching to the castle", 50),
+            Attack: new Buffable("Castle Attack", "Defends against enemies marching to the castle", 1),
             CastleHP: new Buffable("Castle HP", "Castle remaining defenses ultil fall", 100),
-            Reparations: new Buffable("Reparations", "Castle defenses repair speed", 1),
+            Reparations: new Buffable("Repair speed", "Castle defenses repair speed", 1),
             Income: new Buffable("Income", "Castle income", 1),
             Lands: new Buffable("Population", "Population of the lands", 1)
         },
@@ -90,7 +90,7 @@ class Core {
         let wave = this.data.Wave;
         let damage = wave.EnemiesBaseDamage * wave.RemainingEnemies;
 
-        this.addLog("Castle took " + damage.toFixed(2) +" of damage at level "+ wave.Level);
+        this.addLog("Castle took " + damage.toFixed(2) +"❌ of damage at level "+ wave.Level + "🤕");
         this.data.Player.CurrentHP -= damage;
     }
 
@@ -145,7 +145,7 @@ class Core {
         this.applyWaveDamage();
 
         if (this.data.Wave.RemainingEnemies <= 0) {
-            this.addLog("Level " + wave.Level + " cleared");
+            this.addLog("Level " + wave.Level + " cleared 👍");
 
             this.upgradeWave();
             this.nextWave();            
@@ -158,7 +158,7 @@ class Core {
 
             if (this.data.Player.CurrentHP <= 0) {
                 this.data.Player.CurrentHP = 0;
-                this.addLog("You lost");
+                this.addLog("You lost 💀");
                 clearInterval(this.interval);
             }
             this.upgradeWave();
