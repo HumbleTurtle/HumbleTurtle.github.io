@@ -20,8 +20,8 @@ class Core {
         
         Castle: {
             Ralentization: new Buffable("Traps", "Slows down enemy march", 1),
-            Attack: new Buffable("Castle Attack", "Defends against enemies marching to the castle", 1),
-            CastleHP: new Buffable("Castle HP", "Castle remaining defenses ultil fall", 100),
+            Attack: new Buffable("Castle Attack", "Defends against enemies marching to the castle", 10.0),
+            CastleHP: new Buffable("Castle HP", "Castle remaining defenses ultil fall", 100.0),
             Reparations: new Buffable("Repair speed", "Castle defenses repair speed", 1),
             Income: new Buffable("Income", "Castle income", 1),
             Lands: new Buffable("Population", "Population of the lands", 1)
@@ -51,10 +51,10 @@ class Core {
             Frequency: 1/20,
             
             EnemiesPerWave: 10.0,
-            EnemiesBaseHP: 10.0,
+            EnemiesBaseHP: 2.0,
             EnemiesBaseDamage: 10.0,
             EnemiesBaseDefense: 10.0,
-            BaseReachTime: 1.0,
+            BaseReachTime: 10.0,
     
             EnemiesPerWaveMultiplier: 1.1,
             EnemiesHPMultiplier: 1.01,
@@ -82,8 +82,7 @@ class Core {
         }
 
         totalHP -= effectiveDamage;
-
-        this.data.Wave.RemainingEnemies = Math.round( totalHP / this.data.Wave.EnemiesBaseHP );
+        this.data.Wave.RemainingEnemies = totalHP / this.data.Wave.EnemiesBaseHP;
     }
 
     applyCastleDamage() {

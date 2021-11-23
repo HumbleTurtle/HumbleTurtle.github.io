@@ -11,11 +11,11 @@ const app = Vue.createApp({
                 <br>
                 <div style="padding:5px 10px">
                     <b>Current HP:</b>
-                    <h3>{{ fNumber( player.CurrentHP ) }}</h3>
+                    <h3>❤️ {{ fNumber( player.CurrentHP ) }}</h3>
                 </div>               
                 <div style="padding:5px 10px">
                     <b>Money</b>
-                    <h3>{{ fNumber( player.Money ) }}</h3>
+                    <h3>🤑 {{ fNumber( player.Money ) }}</h3>
                 </div>  
                 <br>
                 <div v-for="key in Object.keys( castle ) ">
@@ -44,7 +44,7 @@ const app = Vue.createApp({
 
                 <div>
                     <div class="data">
-                        Remaining enemies: <br> {{ wave.RemainingEnemies  }} / {{this.coreData.Wave.EnemiesPerWave}}  <br>
+                        Remaining enemies: <br> {{ fNumber(wave.RemainingEnemies)  }} / {{this.coreData.Wave.EnemiesPerWave}}  <br>
                         <progress :value="remainingEnemiesPercentage" max="100">{{this.remainingEnemiesPercentage}}%</progress>            
                     </div>
                 </div>
