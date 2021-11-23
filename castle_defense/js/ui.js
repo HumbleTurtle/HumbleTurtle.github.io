@@ -63,16 +63,16 @@ const app = Vue.createApp({
                 <h2>Buffs</h2>
                 <div class="row">
                     <div class="col-sm-4" v-for="key in Object.keys(buffs)">
-                        <div class="buff-card" v-on:click="core.levelUpBuff( buffs[key] )">
+                        <div class="buff-card" v-on:click="core.levelUpBuff( buffs[key] )" :class="(player.Money > buffs[key].cost ) ? 'green': 'red' " >
                             <div class="row">
                                 <div class="col-sm-7">
                                     <b>{{ buffs[key].name }}</b> <br>
                                     {{ buffs[key].description }}
                                 </div>
                                 <div class="col-sm-5"> 
-                                        <span style="float:right;">💰:{{fNumber(buffs[key].cost)}}</span>
-                                        <br> 
-                                        <span style="float:right;">Lvl.{{ buffs[key].level }}</span>      
+                                    <span style="float:right;">{{fNumber(buffs[key].cost)}} 💰</span>
+                                    <br> 
+                                    <span style="float:right;">Lvl.{{ buffs[key].level }}</span>      
                                 </div> 
                             </div>            
 
