@@ -129,7 +129,7 @@ const app = Vue.createApp({
         },
         
         fNumber(number) {
-            return parseFloat(number).toFixed(2);
+            return parseFloat(number).toFixed(0);
         },
 
         update() {
