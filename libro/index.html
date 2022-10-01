@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+      .libro{
+        display:inline-block;
+        display:flex;
+        position:relative;
+        margin:50px auto;
+        width:1000px;
+        height: 700px;
+        box-shadow: 0px 0px 50px #aaa;
+      }
+
+      .pagina{
+        flex:1;
+        background:white;
+        box-sizing: border-box;
+        overflow: hidden;
+        position:relative;
+        border:1px solid rgb(145, 145, 145);
+      }
+      
+      .aux.izquierda {
+        left: 0%;
+        opacity: 0%;
+      }
+      
+      .aux.derecha {
+        left: 50%;
+        opacity: 0%;
+      }
+
+      .p1 > .shadow, .izquierda > .shadow {
+        left: 100%;
+      }
+
+      .p2 > .shadow, .derecha > .shadow {
+        left:0px;
+      }
+
+      .siguiente.shadow, .anterior.shadow {
+        left: -80px;
+      }
+
+      .siguiente{
+        width: 50%;
+        height: 100%;
+        left: 50%;
+        transform-origin: bottom left;
+        margin:0;
+        opacity: 0;
+      }
+
+      .anterior{
+        width: 50%;
+        height: 100%;
+        left: -50%;
+        transform-origin: bottom right;
+        margin:0;
+        z-index: 123012031203;
+        opacity: 0;
+
+      }
+      
+      img {
+        max-width: 100%;
+      }
+
+      .shadow {
+        position: absolute;
+        width: 0px;
+        height: 100%;
+        box-shadow: 3px 0px 47px 14px rgb(134, 134, 134);
+        border-radius: 20px;
+        top: 0;
+      }
+
+      .sombraWrapper{
+        /* filter: drop-shadow(-1px 6px 3px rgba(155, 155, 155, 0.5));  */
+        height: 100%;
+        width: 100%; 
+        position:absolute;
+        z-index:123112312312312323;
+      }
+
+      .aux{
+        position:absolute;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        opacity: 0;
+      }
+
+    </style>
+    <script>
+      function inicializar() {
+        var target = document.querySelector(".siguiente");
+
+        anime({
+          targets: target,
+          translateX: "94%",
+          translateY: "80%",
+          rotate: "61deg"  
+        });
+
+      }
+
+      function generarFrames( moverPagDerecha, target, clipsOnly) {
+
+        var puntos = [];
+        var cont = 0;
+
+        for(var x = -100.0; x <= 100.0; x++) {
+          cont++;
+          var y = Math.sqrt( Math.abs(Math.pow(100,2) - Math.pow(x,2)) );
+          puntos.push({x: x + 100, y: (y/100) *20 });
+        }
+
+        var translateX = [];
+        var translateY = [];
+        var rotate = [];
+        var clipPath = [];
+        var angulos = [];
+        var shadow = [];
+        var clipsAux = [];
+
+        var duration = 10;
+
+        for(var punto of puntos) {
+                    
+          var width = target.offsetWidth;
+          var height = target.offsetHeight;
+          var ratio = width/height;
+
+          var x = Math.floor( punto.x / 100 * width );
+          var y = Math.floor( punto.y / 100 * height );
+
+
+          var tX = x;
+
+          if (moverPagDerecha){
+            tX = -x + width;
+          }
+          
+          translateX.push(
+            {
+              value: `${tX}px`,
+            }
+          );
+
+          translateY.push(
+            {
+              value: `${y == 0 ? 0 : -y+1}px`,
+            }
+          );
+          
+          var anguloRad = Math.atan2( y, x);
+          
+          if (!moverPagDerecha) anguloRad = -anguloRad;
+          var angulo = anguloRad * 180 / Math.PI;
+          
+
+          rotate.push(  
+            {
+              value: `${ angulo * 2 }deg`,
+            }
+          );           
+
+          var segundoPunto = false;
+          
+          var puntoBase = {
+            x: Math.abs( y/Math.sin(2*anguloRad) ),
+            y: height,
+          }
+
+          shadow.push({
+            value: `${puntoBase.x}px`
+          });
+
+          var puntoAlto = {
+            x: 0,
+            y: Math.abs( x/Math.sin(2*anguloRad) )
+          }
+
+          if (puntoAlto.y > height) {
+            var diferencia = Math.abs( puntoAlto.y - height );
+
+            puntoAlto.x = Math.abs( (diferencia / Math.cos(anguloRad)) * Math.sin(anguloRad) ); 
+
+            if(isNaN(puntoAlto.x)) puntoAlto.x = width;     
+
+              puntoAlto.y = height;   
+
+
+            var segundoPunto = true;
+          }
+
+          if(isNaN(puntoAlto.y)) puntoAlto.y = 0;
+          if(!isFinite(puntoAlto.y)) puntoAlto.y = 0;
+          
+          angulos.push([puntoBase.x, puntoBase.y, puntoAlto.x, puntoAlto.y, angulo ])
+
+          if (isNaN(puntoBase.x)) {
+            if (moverPagDerecha)
+              puntoBase.x = width;
+            else
+              puntoBase.x = width;
+          }            
+
+          if (!moverPagDerecha) {
+            if ( segundoPunto ) {
+              clipPath.push({
+                value: `polygon( 100% 100%, ${width-puntoBase.x}px  ${puntoBase.y}px, ${width-puntoAlto.x}px  0px, 100% 0 )`,
+              }); 
+            } else {
+              clipPath.push({
+                value: `polygon( 100% 100%, ${width-puntoBase.x}px  ${puntoBase.y}px, ${width-puntoAlto.x}px  ${height-puntoAlto.y}px, ${width-puntoAlto.x}px  ${height-puntoAlto.y}px)`,
+              });  
+            }
+          } else {
+            if ( segundoPunto ) {
+              clipPath.push({
+                value: `polygon( 0 100%, ${puntoBase.x}px  ${puntoBase.y}px, ${puntoAlto.x}px  ${height-puntoAlto.y}px, 0 0 )`,
+              }); 
+            } else {
+              clipPath.push({
+                value: `polygon( 0 100%, ${puntoBase.x}px  ${puntoBase.y}px, ${puntoAlto.x}px  ${height-puntoAlto.y}px, ${puntoAlto.x}px  ${height-puntoAlto.y}px)`,
+              });  
+            }
+          }
+        }
+
+        function filtrar(arreglo) {
+          return arreglo.filter( (value, idx) => idx%1== 0 || idx == arreglo.length-1 );
+        }
+
+        translateX = filtrar(translateX);
+        translateY = filtrar(translateY);
+        rotate = filtrar(rotate);
+        clipPath = filtrar(clipPath);
+        shadow = filtrar(shadow);        
+        
+        return {
+          translateX,
+          translateY,
+          rotate,
+          clipPath,
+
+          angulos,
+          shadow
+        }
+      }
+
+      function animar(esDireccionDerecha) {
+        var target = null;
+        var aux = document.querySelector('.aux');
+
+        if ( aux.classList.contains('izquierda') )  aux.classList.remove('izquierda')
+        if ( aux.classList.contains('derecha') )  aux.classList.remove('derecha')
+
+        if (esDireccionDerecha) {
+          target = document.querySelector(".siguiente");
+          aux.classList.add("derecha");
+        } else {
+          target = document.querySelector(".anterior");
+          aux.classList.add("izquierda");
+        }
+  
+        var frames = generarFrames(esDireccionDerecha, target);
+        var frames2 = generarFrames(!esDireccionDerecha, target);
+
+        console.log(frames2)
+
+        var tl = anime.timeline({
+          easing: 'easeOutExpo',
+          duration: 500,
+          
+          begin() {
+            console.log("Begin")
+          },
+
+          update: function() {
+            console.log("update")
+          },
+
+          complete: function() {
+
+            if (esDireccionDerecha) {
+              document.querySelector(".p1").innerHTML = target.innerHTML;
+              document.querySelector(".p2").innerHTML = aux.innerHTML;
+            } else {
+              document.querySelector(".p1").innerHTML = aux.innerHTML;  
+              document.querySelector(".p2").innerHTML = target.innerHTML; 
+            }
+
+            anime({
+              targets: [aux, target],
+              opacity: "0%",
+              duration: 10,
+              easing: 'easeOutCubic'
+            })         
+          }
+        })
+        .add({
+          targets: [aux, target],
+          opacity: "100%",
+          duration: 10,
+          easing: 'easeInCubic'
+        }, 50)
+        .add({
+          targets: target,          
+          translateX: frames.translateX,
+          translateY: frames.translateY,
+          rotate: frames.rotate,
+          clipPath: frames.clipPath,
+          easing: 'linear',
+        },0)
+        .add({
+          targets: '.siguiente .shadow',
+          left: frames.shadow,
+          easing: 'linear',
+        },0)
+
+        .add({
+          targets: aux,
+          clipPath: frames2.clipPath,
+          easing: 'linear',  
+        }, 0)
+        
+      }
+
+    </script>
+  </head>
+  <body onload="inicializar()">
+    
+    <div class="libro">
+      <!-- <div class="pagina anterior">
+  
+      </div> -->
+      <div class="sombraWrapper">
+        <div class="pagina anterior">
+          <img src="https://source.unsplash.com/random/1080×1440">
+          <div class="shadow"></div>
+        </div>
+      </div>
+
+      <div class="pagina p1">
+        <img src="https://source.unsplash.com/random/1080×1440?1">
+        <div class="shadow"></div>
+      </div>
+
+      <div class="pagina p2">
+        <img src="https://source.unsplash.com/random/1080×1440?2">      
+        <div class="shadow"></div>
+      </div>
+
+      <div class="sombraWrapper">
+        <div class="pagina siguiente">
+          <img src="https://source.unsplash.com/random/1080×1440?3">
+          <div class="shadow"></div>
+        </div>
+      </div>
+
+      <div class="pagina aux">
+        <img src="https://source.unsplash.com/random/1080×1440?4">      
+        <div class="shadow"></div>
+      </div>
+
+    </div>
+    <button onclick="animar(false)">Izquierda</button>
+    <button onclick="animar(true)">Derecha</button>
+  </body>
+</html>
