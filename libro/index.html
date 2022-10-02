@@ -103,6 +103,8 @@
 
     </style>
     <script>
+      var actual  = -1;
+
       function inicializar() {
         var target = document.querySelector(".siguiente");
 
@@ -112,7 +114,7 @@
           translateY: "80%",
           rotate: "61deg"  
         });
-
+        cargarPagSiguiente();
       }
 
       function generarFrames( moverPagDerecha, target, clipsOnly) {
@@ -262,81 +264,169 @@
       }
 
       function animar(esDireccionDerecha) {
-        var target = null;
+        return new Promise((resolve, reject) => {
+
+          var target = null;
+          var aux = document.querySelector('.aux');
+
+          if ( aux.classList.contains('izquierda') )  aux.classList.remove('izquierda')
+          if ( aux.classList.contains('derecha') )  aux.classList.remove('derecha')
+
+          if (esDireccionDerecha) {
+            target = document.querySelector(".siguiente");
+            aux.classList.add("derecha");
+          } else {
+            target = document.querySelector(".anterior");
+            aux.classList.add("izquierda");
+          }
+    
+          var frames = generarFrames(esDireccionDerecha, target);
+          var frames2 = generarFrames(!esDireccionDerecha, target);
+
+          var tl = anime.timeline({
+            easing: 'easeOutExpo',
+            duration: 500,
+            
+            begin() {
+              console.log("Begin")
+            },
+
+            update: function() {
+              console.log("update")
+            },
+
+            complete: function() {
+
+              if (esDireccionDerecha) {
+                document.querySelector(".p1").innerHTML = target.innerHTML;
+                document.querySelector(".p2").innerHTML = aux.innerHTML;
+              } else {
+                document.querySelector(".p1").innerHTML = aux.innerHTML;  
+                document.querySelector(".p2").innerHTML = target.innerHTML; 
+              }
+
+              anime({
+                targets: [aux, target],
+                opacity: "0%",
+                duration: 10,
+                easing: 'easeOutCubic',
+                complete: function(){
+                  resolve()
+                }
+              })                
+              
+            }
+          })
+          .add({
+            targets: [aux, target],
+            opacity: "100%",
+            duration: 10,
+            easing: 'easeInCubic'
+          }, 50)
+          .add({
+            targets: target,          
+            translateX: frames.translateX,
+            translateY: frames.translateY,
+            rotate: frames.rotate,
+            clipPath: frames.clipPath,
+            easing: 'linear',
+          },0)
+          .add({
+            targets: '.siguiente .shadow',
+            left: frames.shadow,
+            easing: 'linear',
+          },0)
+
+          .add({
+            targets: aux,
+            clipPath: frames2.clipPath,
+            easing: 'linear',  
+          }, 0)
+        
+
+
+        });
+      }
+
+      var paginas = [
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+        "https://source.unsplash.com/random/1080×1440",
+      ];
+
+      async function cargarPagSiguiente() {
+        var target = document.querySelector('.siguiente');
+        var anterior = document.querySelector('.anterior');
         var aux = document.querySelector('.aux');
 
-        if ( aux.classList.contains('izquierda') )  aux.classList.remove('izquierda')
-        if ( aux.classList.contains('derecha') )  aux.classList.remove('derecha')
-
-        if (esDireccionDerecha) {
-          target = document.querySelector(".siguiente");
-          aux.classList.add("derecha");
-        } else {
-          target = document.querySelector(".anterior");
-          aux.classList.add("izquierda");
+        if (actual == -1) {
+          target.innerHTML = `<img src='${paginas[actual+1]}?${actual+1}'> <div class="shadow"></div>`;
+          aux.innerHTML = `<img src='${paginas[actual+2]}?${actual+2}'><div class="shadow"></div>`;
+          actual += 2;
         }
-  
-        var frames = generarFrames(esDireccionDerecha, target);
-        var frames2 = generarFrames(!esDireccionDerecha, target);
 
-        console.log(frames2)
 
-        var tl = anime.timeline({
-          easing: 'easeOutExpo',
-          duration: 500,
+        if ( actual+2 < paginas.length ) {
           
-          begin() {
-            console.log("Begin")
-          },
+          console.log(actual);
+          
+          await animar(true)   
 
-          update: function() {
-            console.log("update")
-          },
+          target.innerHTML = `<img src='${paginas[actual+1]}?${actual+1}'> <div class="shadow"></div>`;
+          aux.innerHTML = `<img src='${paginas[actual+2]}?${actual+2}'><div class="shadow"></div>`;
 
-          complete: function() {
+          // Se actualiza el actual incluyendo las imagenes precargadas
+          actual += 2;
 
-            if (esDireccionDerecha) {
-              document.querySelector(".p1").innerHTML = target.innerHTML;
-              document.querySelector(".p2").innerHTML = aux.innerHTML;
-            } else {
-              document.querySelector(".p1").innerHTML = aux.innerHTML;  
-              document.querySelector(".p2").innerHTML = target.innerHTML; 
-            }
 
-            anime({
-              targets: [aux, target],
-              opacity: "0%",
-              duration: 10,
-              easing: 'easeOutCubic'
-            })         
-          }
-        })
-        .add({
-          targets: [aux, target],
-          opacity: "100%",
-          duration: 10,
-          easing: 'easeInCubic'
-        }, 50)
-        .add({
-          targets: target,          
-          translateX: frames.translateX,
-          translateY: frames.translateY,
-          rotate: frames.rotate,
-          clipPath: frames.clipPath,
-          easing: 'linear',
-        },0)
-        .add({
-          targets: '.siguiente .shadow',
-          left: frames.shadow,
-          easing: 'linear',
-        },0)
+        } else {
+          alert("Se ha alcanzado el tamaño máximo.");
+        }
 
-        .add({
-          targets: aux,
-          clipPath: frames2.clipPath,
-          easing: 'linear',  
-        }, 0)
-        
+      }
+
+      async function cargarPagAnterior() {
+        var target = document.querySelector('.anterior');
+        var ant = document.querySelector('.siguiente');
+
+        var aux = document.querySelector('.aux');
+
+        if ( actual-4 > 0 ) {
+          // Se ignoran los indices de la precarga
+          actual -=2;
+
+          aux.innerHTML = `<img src='${paginas[actual-3]}?${actual-3}'><div class="shadow"></div>`;
+          target.innerHTML = `<img src='${paginas[actual-2]}?${actual-2}'> <div class="shadow"></div>`;
+
+          // Se vuelve atras hasta el indice de las paginas anteriores
+          actual -=2;
+
+          await animar(false);
+
+          ant.innerHTML = `<img src='${paginas[actual+1]}?${actual+1}'> <div class="shadow"></div>`;
+          aux.innerHTML = `<img src='${paginas[actual+2]}?${actual+2}'><div class="shadow"></div>`;
+          
+          // Se actualiza el actual incluyendo las imagenes precargadas
+          actual +=2;
+
+        } else {
+          alert("Se ha alcanzado el tamaño máximo.");
+        }
       }
 
     </script>
@@ -350,36 +440,26 @@
       </div> -->
       <div class="sombraWrapper">
         <div class="pagina anterior">
-          <img src="https://source.unsplash.com/random/1080×1440">
-          <div class="shadow"></div>
         </div>
       </div>
 
       <div class="pagina p1">
-        <img src="https://source.unsplash.com/random/1080×1440?1">
-        <div class="shadow"></div>
       </div>
 
       <div class="pagina p2">
-        <img src="https://source.unsplash.com/random/1080×1440?2">      
-        <div class="shadow"></div>
       </div>
 
       <div class="sombraWrapper">
         <div class="pagina siguiente">
-          <img src="https://source.unsplash.com/random/1080×1440?3">
-          <div class="shadow"></div>
         </div>
       </div>
 
       <div class="pagina aux">
-        <img src="https://source.unsplash.com/random/1080×1440?4">      
-        <div class="shadow"></div>
       </div>
 
     </div>
     </div>
-    <button onclick="animar(false)">Izquierda</button>
-    <button onclick="animar(true)">Derecha</button>
+    <button onclick="cargarPagAnterior()">Izquierda</button>
+    <button onclick="cargarPagSiguiente()">Derecha</button>
   </body>
 </html>
