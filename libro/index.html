@@ -5,6 +5,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
+      body{
+        min-height: 100vh;
+        overflow-x:hidden;
+      }
       .libro{
         display:inline-block;
         display:flex;
@@ -53,6 +57,8 @@
         transform-origin: bottom left;
         margin:0;
         opacity: 0;
+        position:absolute;
+
       }
 
       .anterior{
@@ -63,7 +69,7 @@
         margin:0;
         z-index: 123012031203;
         opacity: 0;
-
+        position:absolute;
       }
       
       img {
@@ -336,7 +342,8 @@
     </script>
   </head>
   <body onload="inicializar()">
-    
+    <div class="" style="position: relative; overflow: hidden;">
+          
     <div class="libro">
       <!-- <div class="pagina anterior">
   
@@ -370,6 +377,7 @@
         <div class="shadow"></div>
       </div>
 
+    </div>
     </div>
     <button onclick="animar(false)">Izquierda</button>
     <button onclick="animar(true)">Derecha</button>
