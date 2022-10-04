@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.1">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
@@ -9,6 +9,7 @@
         min-height: 100vh;
         overflow-x:hidden;
       }
+
       .libro{
         display:inline-block;
         display:flex;
@@ -17,7 +18,7 @@
         width:1000px;
         height: 700px;
         box-shadow: 0px 0px 50px #aaa;
-        background-color: #d2d2d2;
+        background-color: none;
       }
 
       .pagina{
@@ -30,10 +31,14 @@
       }
       
       .p1 {
-        border-radius: 0 10px 10px 0;
+
+        clip-path: url(#clippedIzq);
+
       }
+
       .p2 {
-        border-radius:10px 0 0 10px;
+
+        clip-path: url(#clippedDer);
       }
 
       .aux.izquierda {
@@ -66,7 +71,6 @@
         margin:0;
         opacity: 0;
         position:absolute;
-
       }
 
       .anterior{
@@ -108,6 +112,98 @@
         height: 100%;
         opacity: 0;
       }
+
+      .decoracion {
+        z-index: -10;
+        position: absolute;
+        width: calc(100% + 40px);
+        height: calc(100% + 24px);
+        left: -20px;
+        top: -12px;
+      }
+
+      .cubierta, .contracubierta {
+        background: #c8c8c8;
+        height: 100%;
+        position: relative; 
+        box-shadow: inset 0px 0px 10px 1px #7d7d7d;
+        width: 47.5%;
+        box-sizing: border-box;
+        float:left;
+      }
+
+      .lomo {
+        height: 100%;
+        width: 5%;
+        float:left;
+        box-sizing: border-box;
+        box-shadow: inset 0px 0px 5px 1px #7d7d7d;
+        background: #575757;
+
+      }
+
+      .contracubierta {
+        top:0;
+      }
+
+      .hoja {
+        height: calc(100% - 36px);
+        width: 10px;
+        background: white;
+        z-index: 12314;
+        display: block;
+        position: absolute;
+        top: 18px;
+      }
+
+      .hoja1r, .hoja2r, .hoja3r {
+        border-right: 1px solid gray;
+      }
+
+      .hoja1l, .hoja2l, .hoja3l {
+        border-left: 1px solid gray;
+      }
+
+      
+      .hoja1l{
+        left: 16px;
+        z-index: 10;
+      }
+
+      .hoja2l{
+        left: 13px;
+        z-index: 9;
+        height: calc(100% - 42px);
+        top: 21px;
+      }
+
+      .hoja3l{
+        left: 10px;
+        z-index: 8;
+        height: calc(100% - 48px);
+        top: 24px;
+      }  
+
+
+      .hoja1r{
+        right: 16px;
+        z-index: 10;
+      }
+
+      .hoja2r{
+        right: 13px;
+        z-index: 9;
+        height: calc(100% - 42px);
+        top: 21px;
+      }
+
+      .hoja3r{
+        right: 10px;
+        z-index: 8;
+        height: calc(100% - 48px);
+        top: 24px;
+      }  
+
 
     </style>
     <script>
@@ -440,32 +536,83 @@
     </script>
   </head>
   <body onload="inicializar()">
+    <!-- <svg>
+      <defs>
+        <clipPath id="clipped">
+          <circle cx="var(--myRad)" cy="var(--myRad)" r="var(--myRad)"></circle>
+          <circle cx="var(--myRad)" cy="calc(var(--myHeight) - var(--myRad))" r="var(--myRad)"></circle>
+          <circle cx="calc(var(--myWidth) - var(--myRad))" cy="calc(var(--myHeight) - var(--myRad))" r="var(--myRad)"></circle>
+          <circle cx="calc(var(--myWidth) - var(--myRad))" cy="var(--myRad)" r="var(--myRad)"></circle>
+          <rect y="var(--myRad)" width="var(--myWidth)" height="calc(var(--myHeight) - (2 * var(--myRad)))"></rect>
+          <rect x="var(--myRad)" width="calc(var(--myWidth) - (2 * var(--myRad)))" height="var(--myHeight)"></rect>
+        </clipPath>
+      </defs>
+    </svg> -->
+
     <div class="" style="position: relative; overflow: hidden;">
-          
-    <div class="libro">
-      <!-- <div class="pagina anterior">
-  
-      </div> -->
-      <div class="sombraWrapper">
-        <div class="pagina anterior">
+
+      <div class="libro">
+
+        <div class="decoracion">
+          <div class="cubierta"></div>
+          <div class="lomo"></div>
+          <div class="contracubierta"></div>
+          <div class="hoja hoja1r"></div>
+          <div class="hoja hoja2r"></div>
+          <div class="hoja hoja3r"></div>
+          <div class="hoja hoja1l"></div>
+          <div class="hoja hoja2l"></div>
+          <div class="hoja hoja3l"></div>
         </div>
-      </div>
 
-      <div class="pagina p1">
-      </div>
-
-      <div class="pagina p2">
-      </div>
-
-      <div class="sombraWrapper">
-        <div class="pagina siguiente">
+        <!-- <div class="pagina anterior">
+    
+        </div> -->
+        <div class="sombraWrapper">
+          <div class="pagina anterior">
+          </div>
         </div>
+
+        <div class="pagina p1">
+        </div>
+
+        <div class="pagina p2">
+        </div>
+
+        <div class="sombraWrapper">
+          <div class="pagina siguiente">
+          </div>
+        </div>
+
+        <div class="pagina aux">
+        </div>
+
+        <div class="pagina" style="position:absolute;width:50%; height:100%; opacity: 0;">
+          <svg 
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          height="100%" width="100%" preserveAspectRatio="none"
+          >
+          <defs>
+            <clipPath id="clippedDer">
+              <ellipse ry="10%" cx="25%" rx="43%" cy="9.5%"> </ellipse>
+              <rect width="31%" height="80%" x="0%" y="10%"></rect>
+              <rect width="80%" height="100%" x="30%" y="0%"></rect>
+              <ellipse ry="10%" cx="25%" rx="43%" cy="90.5%"> </ellipse>
+            </clipPath>
+            <clipPath id="clippedIzq">
+              <ellipse ry="10%" cx="75%" rx="43%" cy="9.5%"> </ellipse>
+              <rect width="80%" height="100%" x="0%" y="0%"></rect>
+              <rect width="21%" height="80%" x="79%" y="10%"></rect>
+              <ellipse ry="10%" cx="75%" rx="43%" cy="90.5%"> </ellipse>
+            </clipPath>
+          </defs>   
+        </svg>
+        </div>
+
       </div>
 
-      <div class="pagina aux">
-      </div>
-
-    </div>
     </div>
     <button onclick="cargarPagAnterior()">Izquierda</button>
     <button onclick="cargarPagSiguiente()">Derecha</button>
